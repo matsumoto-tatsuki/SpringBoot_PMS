@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html  xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>更新</title>
+<link href="/css/commons.css" rel="stylesheet">
+</head>
+<th:block th:insert="/common/header"></th:block>
+
+  <div class="insert">
+    <div class="form-body">
+      <p class="error" th:text="${error}"></p>
+
+      <form th:action="@{/productUpdate/{id}(id=*{productId})}" method="post" th:Object="${product}" >
+        <fieldset class="label-130">
+          <div>
+            <label>商品ID</label>
+            <input type="text" name="productId" value="10001" class="base-text" th:field="*{productId}">
+            <span class="error" th:each="error: ${#fields.errors('productId')}"> [[ ${error} ]] </span>
+          </div>
+          <div>
+            <label>商品名</label>
+            <input type="text" name="name" value="マッキー(黒)" class="base-text" th:field="*{productName}">
+            <span class="error" th:each="error: ${#fields.errors('productName')}"> [[ ${error} ]] </span>
+          </div>
+          <div>
+            <label>単価</label>
+            <input type="text" name="price" value="165" class="base-text" th:field="*{productPrice}">
+            <span class="error" th:each="error: ${#fields.errors('productPrice')}"> [[ ${error} ]] </span>
+          </div>
+          <div>
+            <label>カテゴリ</label>
+            <select name="categoryId" class="base-text"  th:field="*{categoryName}">
+              <option th:each="category : ${categories}" th:value="${category.categoryName}" th:text="${category.categoryName}"></option>
+            </select>
+          </div>
+          <div>
+            <label>商品説明</label>
+            <textarea name="description" class="base-text" th:field="*{description}">
+ゼブラ株式会社
+線の太さ：太6.0mm、細1.5～2.0mm
+            </textarea>
+          </div>
+          <div>
+            <label>画像</label>
+            <input type="file" name="file">
+            <span class="error">エラーメッセージ</span>
+          </div>
+        </fieldset>
+          <div class="btns">
+            <button type="button" onclick="openModal()" class="basic-btn">更新</button>
+            <input type="button" onclick="location.href='/menuIndex'" value="メニューに戻る" class="cancel-btn">
+          </div>
+          <div id="modal">
+            <p class="modal-message">更新しますか？</p>
+            <div class="btns">
+              <button type="submit" id="update-btn" class="basic-btn">更新</button>
+              <button type="button" onclick="closeModal()" class="cancel-btn">キャンセル</button>
+            </div>
+          </div>
+      </form>
+    </div>
+  </div>
+  <div id="fadeLayer"></div>
+  <script src="/js/commons.js"></script>
+<!--  <script>-->
+<!--    'use strict'-->
+<!--    document.getElementById('update-btn').addEventListener('click', () => {-->
+<!--      location.href = './menu.html'-->
+<!--    })-->
+<!--  </script>-->
+</body>
+</html>

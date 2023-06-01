@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html  xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>ログイン</title>
+<link href="css/commons.css" rel="stylesheet">
+</head>
+<body class="login-body">
+  <div class="header">
+    <h1 class="site_logo">商品管理システム</h1>
+  </div>
+
+  <div class="login-form">
+    <img src="./images/logo.png" class="login-logo">
+    <p class="error" th:text="${error}"></p>
+
+    <form action="/user-login" method="post" th:Object="${loginForm}">
+      <fieldset>
+        <div class="cp_iptxt">
+          <input class="base-input" type="text" name="loginId" placeholder="ID" th:field="*{loginId}">
+          <div class="error" th:each="error: ${#fields.errors('loginId')}">
+            [[ ${error} ]]
+          </div>
+        </div>
+
+        <div>
+          <input class="base-input" type="password" name="pass" placeholder="PASS" th:field="*{password}">
+          <div class="error" th:each="error: ${#fields.errors('password')}">
+            [[ ${error} ]]
+          </div>
+        </div>
+      </fieldset>
+      <button id="login-btn" class="custom-btn" type="submit">
+          ログイン
+      </button>
+    </form>
+  </div>
+
+</body>
+</html>

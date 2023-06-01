@@ -1,0 +1,15 @@
+<!DOCTYPE html >
+<html xmlns:th="http://www.thymeleaf.org">
+  <div class="header">
+    <h1 class="site_logo"><a href="/menuIndex">商品管理システム</a></h1>
+    <div class="user">
+      <p class="user_name"><span th:text="${session['userName']}"></span>さん、こんにちは</p>
+      <form class="logout_form" action="/user-logout" method="get">
+        <button class="custom-btn" type="submit">
+          <img src="/images/ドアアイコン.png">ログアウト</button>
+      </form>
+    </div>
+  </div>
+
+  <hr>
+</html>
