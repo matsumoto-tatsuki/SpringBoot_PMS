@@ -23,10 +23,10 @@ public class ProductService {
     public List<Product> findOrderSort(String where, String order) {
         return productDao.findOrderSort(where,order);
     }
-    public List<Product> findNameSort(String name) {
+    public List<Product> findNameSort(String[] name) {
         return productDao.findNameSort(name);
     }
-    public List<Product> findOrderNameSort(String where, String order, String name) {
+    public List<Product> findOrderNameSort(String where, String order, String[] name) {
         return productDao.findOrderNameSort(where, order, name);
     }
 

@@ -91,6 +91,7 @@ public class WebTaskController {
         }
         User user = (User)session.getAttribute("user");
         model.addAttribute("userRole",user.getRole());
+
         System.out.println(order);
         System.out.println(keyword);
 
@@ -98,9 +99,18 @@ public class WebTaskController {
         String where = null;
         String jun = null;
         String key = keyword.isEmpty() ? null : keyword;
-
-
         System.out.println(key);
+
+        String[] keyParts = new String[0];
+        if(key != null) {
+            keyParts = key.split(" ");
+            var keyNum = keyParts.length;
+            System.out.println("keyParts[0]:" + keyParts[0]);
+
+            System.out.println("keyNum:" + keyNum);
+        }
+
+
         if(!order.equals("並び替え")) {
             if (parts[0].equals("商品ID")) {
                 where = "productId";
@@ -122,11 +132,11 @@ public class WebTaskController {
 
         List list = new ArrayList<Product>();
         if(where != null && jun != null && key != null){
-            list = productService.findOrderNameSort(where,jun,key);
+            list = productService.findOrderNameSort(where,jun,keyParts);
         }else if(where != null && jun != null){
             list = productService.findOrderSort(where,jun);
         }else if(key != null){
-            list = productService.findNameSort(key);
+            list = productService.findNameSort(keyParts);
         }
         list = list.isEmpty() ? productService.findAll() : list;
         model.addAttribute("productFindAll",list);

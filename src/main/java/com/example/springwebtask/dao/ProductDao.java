@@ -63,38 +63,68 @@ public class ProductDao {
                                         " ORDER BY " + where + " " + order, param, new DataClassRowMapper<>(Product.class));
         return list.isEmpty() ? null : list;
     }
-    public List<Product> findNameSort(String name){
+    public List<Product> findNameSort(String[] name){
         System.out.println("ProductDaoCheck(findNameSort)");
         MapSqlParameterSource param = new MapSqlParameterSource();
-        String nameSort = "%" + name + "%";
-        param.addValue("name", nameSort);
-        var list = jdbcTemplate.query("SELECT product_id productId\n" +
-                                            "       ,p.name productName\n" +
-                                            "       ,price productPrice\n" +
-                                            "       ,c.name categoryName\n" +
-                                            "       ,description description\n" +
-                                            " FROM products p\n" +
-                                            " JOIN categories c\n" +
-                                            " ON p.category_id = c.id\n" +
-                                            " WHERE p.name LIKE :name\n" +
-                                            " ORDER BY product_id", param, new DataClassRowMapper<>(Product.class));
+
+
+        var SQL = "SELECT product_id productId\n" +
+                "       ,p.name productName\n" +
+                "       ,price productPrice\n" +
+                "       ,c.name categoryName\n" +
+                "       ,description description\n" +
+                " FROM products p\n" +
+                " JOIN categories c\n" +
+                " ON p.category_id = c.id\n";
+        var WHERE = " WHERE p.name LIKE :name0\n";
+        var OR =" OR c.name LIKE :name0";
+        var ORDER = " ORDER BY product_id";
+
+        String[] nameSort = new String[name.length];
+        for(var i = 0;i < name.length;i++){
+            nameSort[i] = "%" + name[i] + "%";
+        }
+        for(var i = 1;i < name.length;i++){
+            WHERE += " AND p.name LIKE :name" + i;
+            OR += "AND c.name LIKE :name" + i;
+        }
+        for(var i = 0;i < nameSort.length;i++) {
+            param.addValue("name" + i, nameSort[i]);
+        }
+
+        var list = jdbcTemplate.query(SQL + WHERE + OR + ORDER
+                                            , param, new DataClassRowMapper<>(Product.class));
         return list.isEmpty() ? null : list;
     }
-    public List<Product> findOrderNameSort(String where,String order,String name){
+    public List<Product> findOrderNameSort(String where,String order,String[] name){
         System.out.println("ProductDaoCheck(findOrderNameSort)");
         MapSqlParameterSource param = new MapSqlParameterSource();
-        String nameSort = "%" + name + "%";
-        param.addValue("name", nameSort);
-        var list = jdbcTemplate.query("SELECT product_id productId\n" +
-                                            "       ,p.name productName\n" +
-                                            "       ,price productPrice\n" +
-                                            "       ,c.name categoryName\n" +
-                                            "       ,description description\n" +
-                                            " FROM products p\n" +
-                                            " JOIN categories c\n" +
-                                            " ON p.category_id = c.id\n" +
-                                            " WHERE p.name LIKE :name\n" +
-                                            " ORDER BY " + where + " " + order, param, new DataClassRowMapper<>(Product.class));
+
+        var SQL = "SELECT product_id productId\n" +
+                "       ,p.name productName\n" +
+                "       ,price productPrice\n" +
+                "       ,c.name categoryName\n" +
+                "       ,description description\n" +
+                " FROM products p\n" +
+                " JOIN categories c\n" +
+                " ON p.category_id = c.id\n";
+        var WHERE = " WHERE p.name LIKE :name0\n";
+        var OR =" OR c.name LIKE :name0";
+        var ORDER = " ORDER BY " + where + " " + order;
+
+        String[] nameSort = new String[name.length];
+        for(var i = 0;i < name.length;i++){
+            nameSort[i] = "%" + name[i] + "%";
+        }
+        for(var i = 1;i < name.length;i++){
+            WHERE += " AND p.name LIKE :name" + i;
+            OR += "AND c.name LIKE :name" + i;
+        }
+        for(var i = 0;i < nameSort.length;i++) {
+            param.addValue("name" + i, nameSort[i]);
+        }
+
+        var list = jdbcTemplate.query(SQL + WHERE + OR + ORDER, param, new DataClassRowMapper<>(Product.class));
         return list.isEmpty() ? null : list;
     }
 
